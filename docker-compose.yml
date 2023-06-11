@@ -3,24 +3,28 @@ services:
 
     local.storage.emulator:
         image: "mcr.microsoft.com/azure-storage/azurite:latest"
+        command: "azurite -l /data --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0 --disableProductStyleUrl"
         container_name: local.storage.emulator
         ports:
             - 10000:10000
             - 10001:10001
+            - 10002:10002
+        
             
-    local.functions:
-        container_name: local.functions
-        build:
-            context: .
-            dockerfile: Dockerfile
-        ports:
-            - 8080:80
-        environment:
-            # Copy .env variables through to container
-            - AzureWebJobsStorage
-            - BlobContainerName
-            - BlobOutputContainerName
-            - QueueName
-            - FUNCTIONS_WORKER_RUNTIME=dotnet-isolated
-        depends_on:
-            - local.storage.emulator
+    # local.functions:
+    #     container_name: local.functions
+    #     build:
+    #         context: .
+    #         dockerfile: Dockerfile
+    #     ports:
+    #         - 8080:80
+    #     environment:
+    #         # Copy .env variables through to container
+    #         - AzureWebJobsStorage
+    #         - BlobContainerName
+    #         - BlobOutputContainerName
+    #         - QueueName
+    #         - FUNCTIONS_WORKER_RUNTIME=dotnet-isolated
+    #         - WEBSITE_HOSTNAME=localhost:80
+    #     depends_on:
+    #         - local.storage.emulator
