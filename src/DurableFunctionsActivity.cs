@@ -17,16 +17,19 @@ public static class DurableFunctionsActivity
     }
 
     [Function(nameof(ReturnDataSize))]
-    public static string ReturnDataSize([ActivityTrigger] FunctionContext executionContext, string fileJson)
+    public static string ReturnDataSize([ActivityTrigger] FunctionContext executionContext)
     {
         ILogger logger = executionContext.GetLogger(nameof(ReturnDataSize));
         logger.LogInformation("DurableFunctionsActivity ReturnDataSize Started");
 
-        var filePart = JsonSerializer.Deserialize<FilePartJson>(fileJson);
-        byte[] dataByteArray = Encoding.ASCII.GetBytes(filePart.Data);
+        string? guid = executionContext.BindingContext.BindingData.First(t => t.Key == "executionContext").Value.ToString();
+
+        BlobClient blobClient = new BlobClient();
+        FilePartJson filePartJson = blobClient.BlobDownload(guid);
+        byte[] dataByteArray = Encoding.ASCII.GetBytes(filePartJson.Data);
         long byteSize = dataByteArray.Length;
 
-        var ret = "The file " + filePart.FileName + " is " + ((byteSize / 1024) / 1024).ToString() + " MB large." ;
+        var ret = "The file " + filePartJson.FileName + " is " + ((byteSize / 1024) / 1024).ToString() + " MB large." ;
         return ret;
     }
 }
