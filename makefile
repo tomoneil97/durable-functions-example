@@ -1,12 +1,10 @@
-up: build host
+up: host
 
-build: 
-	dotnet restore ./src
-	dotnet build ./src
-	
 host: 
 	docker-compose up
 
+down: clean
+
 clean: 
 	dotnet clean ./src
-	docker-compose down
+	docker-compose down --rmi all

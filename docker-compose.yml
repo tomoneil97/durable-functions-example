@@ -11,20 +11,20 @@ services:
             - 10002:10002
         
             
-    # local.functions:
-    #     container_name: local.functions
-    #     build:
-    #         context: .
-    #         dockerfile: Dockerfile
-    #     ports:
-    #         - 8080:80
-    #     environment:
-    #         # Copy .env variables through to container
-    #         - AzureWebJobsStorage
-    #         - BlobContainerName
-    #         - BlobOutputContainerName
-    #         - QueueName
-    #         - FUNCTIONS_WORKER_RUNTIME=dotnet-isolated
-    #         - WEBSITE_HOSTNAME=localhost:80
-    #     depends_on:
-    #         - local.storage.emulator
+    local.functions:
+        container_name: local.functions
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - 8080:80
+        environment:
+            # Copy .env variables through to container
+            - AzureWebJobsStorage
+            - BlobContainerName
+            - BlobOutputContainerName
+            - QueueName
+            - FUNCTIONS_WORKER_RUNTIME=dotnet-isolated
+            - WEBSITE_HOSTNAME=localhost:80
+        depends_on:
+            - local.storage.emulator
