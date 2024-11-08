@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Example.DurableFunctions;
 
-public class BlobClient
+public class BlobClient : IBlobClient
 {
     string? containerName = "uploads";
     string? Connection = Environment.GetEnvironmentVariable("AzureWebJobsStorage");

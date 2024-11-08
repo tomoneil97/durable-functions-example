@@ -21,7 +21,7 @@ public static class DurableFunctionsClient
 
         var testvalue = executionContext.BindingContext.BindingData["testFileUpload"];
 
-        BlobClient blobClient = new BlobClient();
+        IBlobClient blobClient = new BlobClient();
         Guid guid = blobClient.BlobUpload(req);
         string guidStr = guid.ToString();
         
